@@ -89,16 +89,19 @@ jobs:
           path: allure-results-all
           merge-multiple: true
 
-      - name: Generate Allure report
-        uses: simple-elf/allure-report-action@v1.9
-        if: always()
-        id: allure-report
+      - uses: actions/setup-java@v4
         with:
-          allure_results: allure-results-all
-          allure_report: allure-report
-          gh_pages: gh-pages
-          allure_history: allure-history
-          keep_reports: 20
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install Allure commandline
+        run: |
+          curl -sSL -o allure.zip https://github.com/allure-framework/allure2/releases/download/2.46.0/allure-2.46.0.zip
+          unzip -q allure.zip
+          echo "$PWD/allure-2.46.0/bin" >> "$GITHUB_PATH"
+
+      - name: Generate Allure report
+        run: allure generate allure-results-all --output allure-report --clean
 
       - name: Deploy report to GitHub Pages
         if: always()
@@ -106,4 +109,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: allure-history
+          publish_dir: allure-report
