@@ -1,5 +1,5 @@
 import pytest
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 from pages.base_page import BasePage
 
@@ -10,4 +10,4 @@ def test_homepage_loads(page: Page):
     home.goto("/")
 
     assert "Automation Exercise" in home.title()
-    assert page.locator("div.logo").first.is_visible()
+    expect(page.locator("div.logo").first).to_be_visible()

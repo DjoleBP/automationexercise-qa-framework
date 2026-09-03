@@ -1,4 +1,5 @@
 import pytest
+from playwright.sync_api import expect
 
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage, PaymentPage
@@ -24,4 +25,4 @@ def test_checkout_flow_up_to_order_confirmation(logged_in_page, registered_user)
     payment = PaymentPage(page)
     payment.pay_with_dummy_card(registered_user.name)
 
-    assert payment.order_confirmation_message.is_visible()
+    expect(payment.order_confirmation_message).to_be_visible()

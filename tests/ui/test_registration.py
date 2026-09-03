@@ -1,4 +1,5 @@
 import pytest
+from playwright.sync_api import expect
 
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
@@ -22,10 +23,10 @@ def test_register_new_user_with_valid_data(page):
     signup_page.fill_account_information(user)
     signup_page.submit()
 
-    assert signup_page.account_created_heading.is_visible()
+    expect(signup_page.account_created_heading).to_be_visible()
     signup_page.continue_after_account_created()
 
-    assert home.is_logged_in_as(user.name)
+    home.expect_logged_in_as(user.name)
 
     delete_account(user.email, user.password)
 
@@ -39,4 +40,4 @@ def test_register_with_already_registered_email(page, registered_user):
     login_page = LoginPage(page)
     login_page.start_signup("Another Name", registered_user.email)
 
-    assert login_page.signup_error.is_visible()
+    expect(login_page.signup_error).to_be_visible()

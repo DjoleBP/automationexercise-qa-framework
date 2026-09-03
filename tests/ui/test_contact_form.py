@@ -1,4 +1,5 @@
 import pytest
+from playwright.sync_api import expect
 
 from pages.contact_us_page import ContactUsPage
 from pages.home_page import HomePage
@@ -12,7 +13,7 @@ def test_submit_contact_form_with_valid_data(page):
     contact_page.fill_form(ContactMessage())
     contact_page.submit()
 
-    assert contact_page.success_message.is_visible()
+    expect(contact_page.success_message).to_be_visible()
 
 
 @pytest.mark.negative
@@ -31,4 +32,4 @@ def test_subscribe_to_newsletter(page):
     home.open()
     home.subscribe_to_newsletter(unique_email("newsletter"))
 
-    assert home.subscribe_success_message.is_visible()
+    expect(home.subscribe_success_message).to_be_visible()

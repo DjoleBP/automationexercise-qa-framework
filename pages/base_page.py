@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 
 from utils.config import BASE_URL
 
@@ -37,3 +37,7 @@ class BasePage:
 
     def is_logged_in_as(self, name: str) -> bool:
         return self.page.get_by_text(f"Logged in as {name}").is_visible()
+
+    def expect_logged_in_as(self, name: str):
+        """Waits (with retry) for the "Logged in as <name>" nav text to appear."""
+        expect(self.page.get_by_text(f"Logged in as {name}")).to_be_visible()

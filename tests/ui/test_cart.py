@@ -1,4 +1,5 @@
 import pytest
+from playwright.sync_api import expect
 
 from pages.cart_page import CartPage
 from pages.home_page import HomePage
@@ -15,6 +16,7 @@ def test_add_product_to_cart_with_specific_quantity(page):
     details.go_to_cart_from_modal()
 
     cart = CartPage(page)
+    expect(cart.cart_rows.first).to_be_visible()
     assert cart.product_count() == 1
     assert "4" in cart.quantity_for_product(1)
 
@@ -31,6 +33,7 @@ def test_add_multiple_products_to_cart(page):
     products_page.go_to_cart()
 
     cart = CartPage(page)
+    expect(cart.cart_rows.nth(1)).to_be_visible()
     assert cart.product_count() == 2
 
 
@@ -42,13 +45,14 @@ def test_remove_item_from_cart(page):
     details.go_to_cart_from_modal()
 
     cart = CartPage(page)
+    expect(cart.cart_rows.first).to_be_visible()
     assert cart.product_count() == 1
     cart.remove_product(1)
 
     cart.row_for_product(1).wait_for(state="detached")
     assert cart.product_count() == 0
     page.reload()
-    assert cart.empty_cart_message.is_visible()
+    expect(cart.empty_cart_message).to_be_visible()
 
 
 @pytest.mark.regression
@@ -60,4 +64,4 @@ def test_recommended_items_appears_on_homepage(page):
     home.open()
 
     home.recommended_items.scroll_into_view_if_needed()
-    assert home.recommended_items.is_visible()
+    expect(home.recommended_items).to_be_visible()
