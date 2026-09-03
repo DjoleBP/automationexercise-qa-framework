@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * *' # nightly full regression run
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Select test scope
+        id: scope
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "markers=smoke or functional or regression or negative or api or mobile" >> "$GITHUB_OUTPUT"
+          else
+            echo "markers=smoke or api" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run tests
+        run: |
+          mkdir -p reports/allure-results reports/pytest-html
+          pytest -m "${{ steps.scope.outputs.markers }}" --browser ${{ matrix.browser }} \
+            --alluredir=reports/allure-results \
+            --html=reports/pytest-html/report-${{ matrix.browser }}.html --self-contained-html \
+            --junitxml=reports/junit-${{ matrix.browser }}.xml
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-html-${{ matrix.browser }}
+          path: reports/pytest-html
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.browser }}
+          path: reports/allure-results
+
+      - name: Upload JUnit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-${{ matrix.browser }}
+          path: reports/junit-${{ matrix.browser }}.xml
+
+  publish-report:
+    name: Publish Allure report to GitHub Pages
+    needs: test
+    if: always() && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all Allure results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-results-*
+          path: allure-results-all
+          merge-multiple: true
+
+      - name: Generate Allure report
+        uses: simple-elf/allure-report-action@v1.9
+        if: always()
+        id: allure-report
+        with:
+          allure_results: allure-results-all
+          allure_report: allure-report
+          gh_pages: gh-pages
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Deploy report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
