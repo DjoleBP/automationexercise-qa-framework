@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+reports/*
+!reports/.gitkeep
+allure-results/
+allure-report/
+.env
+*.egg-info/
+.vscode/
+.idea/
+node_modules/
