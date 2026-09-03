@@ -31,5 +31,33 @@ def delete_account(email: str, password: str) -> requests.Response:
     return requests.delete(f"{API_BASE_URL}/deleteAccount", data={"email": email, "password": password})
 
 
-def verify_login(email: str, password: str) -> requests.Response:
-    return requests.post(f"{API_BASE_URL}/verifyLogin", data={"email": email, "password": password})
+def verify_login(email: str, password: str | None = None) -> requests.Response:
+    payload = {"email": email}
+    if password is not None:
+        payload["password"] = password
+    return requests.post(f"{API_BASE_URL}/verifyLogin", data=payload)
+
+
+def get_products_list() -> requests.Response:
+    return requests.get(f"{API_BASE_URL}/productsList")
+
+
+def post_products_list() -> requests.Response:
+    return requests.post(f"{API_BASE_URL}/productsList")
+
+
+def get_brands_list() -> requests.Response:
+    return requests.get(f"{API_BASE_URL}/brandsList")
+
+
+def put_brands_list() -> requests.Response:
+    return requests.put(f"{API_BASE_URL}/brandsList")
+
+
+def search_product(search_term: str | None) -> requests.Response:
+    payload = {} if search_term is None else {"search_product": search_term}
+    return requests.post(f"{API_BASE_URL}/searchProduct", data=payload)
+
+
+def delete_verify_login() -> requests.Response:
+    return requests.delete(f"{API_BASE_URL}/verifyLogin")
