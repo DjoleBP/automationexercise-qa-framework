@@ -1,17 +1,15 @@
 import pytest
 
 from utils.api_client import get_products_list, post_products_list
+from utils.assertions import assert_api_response
 
 pytestmark = pytest.mark.api
 
 
 @pytest.mark.smoke
 def test_get_products_list_returns_products():
-    response = get_products_list()
-    body = response.json()
+    body = assert_api_response(get_products_list(), 200)
 
-    assert response.status_code == 200
-    assert body["responseCode"] == 200
     assert isinstance(body["products"], list)
     assert len(body["products"]) > 0
 
@@ -24,10 +22,6 @@ def test_get_products_list_returns_products():
 
 @pytest.mark.negative
 def test_post_products_list_method_not_allowed():
-    response = post_products_list()
-    body = response.json()
+    body = assert_api_response(post_products_list(), 405)
 
-    # The API always answers HTTP 200; the real result lives in "responseCode".
-    assert response.status_code == 200
-    assert body["responseCode"] == 405
     assert "not supported" in body["message"].lower()

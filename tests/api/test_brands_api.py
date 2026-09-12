@@ -1,17 +1,15 @@
 import pytest
 
 from utils.api_client import get_brands_list, put_brands_list
+from utils.assertions import assert_api_response
 
 pytestmark = pytest.mark.api
 
 
 @pytest.mark.smoke
 def test_get_brands_list_returns_brands():
-    response = get_brands_list()
-    body = response.json()
+    body = assert_api_response(get_brands_list(), 200)
 
-    assert response.status_code == 200
-    assert body["responseCode"] == 200
     assert isinstance(body["brands"], list)
     assert len(body["brands"]) > 0
 
@@ -22,9 +20,6 @@ def test_get_brands_list_returns_brands():
 
 @pytest.mark.negative
 def test_put_brands_list_method_not_allowed():
-    response = put_brands_list()
-    body = response.json()
+    body = assert_api_response(put_brands_list(), 405)
 
-    assert response.status_code == 200
-    assert body["responseCode"] == 405
     assert "not supported" in body["message"].lower()

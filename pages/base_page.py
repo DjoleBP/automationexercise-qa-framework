@@ -4,7 +4,7 @@ from utils.config import BASE_URL
 
 
 class BasePage:
-    """Common navigation shared by the site's header, present on every page."""
+    """Chrome shared across the site: the header navigation and the add-to-cart modal."""
 
     def __init__(self, page: Page):
         self.page = page
@@ -13,6 +13,7 @@ class BasePage:
         self.delete_account_link = page.locator('a[href="/delete_account"]')
         self.products_link = page.locator('a[href="/products"]').first
         self.cart_link = page.locator('a[href="/view_cart"]').first
+        self.close_modal_button = page.locator("button.close-modal")
 
     def goto(self, path: str = "/"):
         self.page.goto(f"{BASE_URL}{path}")
@@ -28,6 +29,14 @@ class BasePage:
 
     def go_to_cart(self):
         self.cart_link.click()
+
+    def close_modal(self):
+        """Dismisses the "Added!" confirmation modal.
+
+        Required between consecutive add-to-cart clicks: the modal's backdrop covers the
+        page and swallows the next click.
+        """
+        self.close_modal_button.click()
 
     def logout(self):
         self.logout_link.click()

@@ -3,14 +3,14 @@ from playwright.sync_api import expect
 
 from pages.contact_us_page import ContactUsPage
 from pages.home_page import HomePage
-from utils.data_factory import ContactMessage, unique_email
+from utils.data_factory import random_contact_message, unique_email
 
 
 @pytest.mark.smoke
 def test_submit_contact_form_with_valid_data(page):
     contact_page = ContactUsPage(page)
     contact_page.open()
-    contact_page.fill_form(ContactMessage())
+    contact_page.fill_form(random_contact_message())
     contact_page.submit()
 
     expect(contact_page.success_message).to_be_visible()

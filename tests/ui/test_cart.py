@@ -18,7 +18,7 @@ def test_add_product_to_cart_with_specific_quantity(page):
     cart = CartPage(page)
     expect(cart.cart_rows.first).to_be_visible()
     assert cart.product_count() == 1
-    assert "4" in cart.quantity_for_product(1)
+    assert cart.quantity_for_product(1).strip() == "4"
 
 
 @pytest.mark.functional
@@ -26,9 +26,9 @@ def test_add_multiple_products_to_cart(page):
     products_page = ProductsPage(page)
     products_page.open()
     products_page.add_product_to_cart_by_index(0)
-    products_page.page.locator("button.close-modal").click()
+    products_page.close_modal()
     products_page.add_product_to_cart_by_index(1)
-    products_page.page.locator("button.close-modal").click()
+    products_page.close_modal()
 
     products_page.go_to_cart()
 
@@ -49,7 +49,7 @@ def test_remove_item_from_cart(page):
     assert cart.product_count() == 1
     cart.remove_product(1)
 
-    cart.row_for_product(1).wait_for(state="detached")
+    expect(cart.row_for_product(1)).to_have_count(0)
     assert cart.product_count() == 0
     page.reload()
     expect(cart.empty_cart_message).to_be_visible()

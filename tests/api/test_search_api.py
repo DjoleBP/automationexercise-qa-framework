@@ -1,17 +1,15 @@
 import pytest
 
 from utils.api_client import search_product
+from utils.assertions import assert_api_response
 
 pytestmark = pytest.mark.api
 
 
 @pytest.mark.smoke
 def test_search_product_with_valid_term_returns_matches():
-    response = search_product("top")
-    body = response.json()
+    body = assert_api_response(search_product("top"), 200)
 
-    assert response.status_code == 200
-    assert body["responseCode"] == 200
     assert len(body["products"]) > 0
 
     # The search matches on category as well as product name (e.g. a "Tops & Shirts"
@@ -26,20 +24,13 @@ def test_search_product_with_valid_term_returns_matches():
 
 @pytest.mark.negative
 def test_search_product_with_missing_parameter():
-    response = search_product(None)
-    body = response.json()
+    body = assert_api_response(search_product(None), 400)
 
-    # The API always answers HTTP 200; the real result lives in "responseCode".
-    assert response.status_code == 200
-    assert body["responseCode"] == 400
     assert "search_product parameter is missing" in body["message"]
 
 
 @pytest.mark.negative
 def test_search_product_with_no_matching_term_returns_empty_list():
-    response = search_product("zzznonexistentproductxyz")
-    body = response.json()
+    body = assert_api_response(search_product("zzznonexistentproductxyz"), 200)
 
-    assert response.status_code == 200
-    assert body["responseCode"] == 200
     assert body["products"] == []
