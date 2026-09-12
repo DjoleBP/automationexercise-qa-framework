@@ -1,0 +1,2 @@
+INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/searchProduct data={'search_product': 'zzznonexistentproductxyz'}
+INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/searchProduct -> HTTP 200 body={"responseCode": 200, "products": []}

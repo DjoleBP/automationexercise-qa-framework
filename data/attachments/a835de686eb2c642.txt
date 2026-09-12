@@ -1,0 +1,2 @@
+INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/verifyLogin data={'email': 'someone@example.com'}
+INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/verifyLogin -> HTTP 200 body={"responseCode": 400, "message": "Bad request, email or password parameter is missing in POST request."}
