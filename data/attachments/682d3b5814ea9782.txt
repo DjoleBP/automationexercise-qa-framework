@@ -1,0 +1,2 @@
+INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/searchProduct data={}
+INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/searchProduct -> HTTP 200 body={"responseCode": 400, "message": "Bad request, search_product parameter is missing in POST request."}
