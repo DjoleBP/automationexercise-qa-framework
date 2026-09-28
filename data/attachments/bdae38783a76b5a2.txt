@@ -1,0 +1,6 @@
+INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/createAccount data={'name': 'Garrett Mcbride', 'email': 'qaframework_c0a140e94a@mailinator.com', 'password': '***', 'title': 'Mr', 'birth_date': '11', 'birth_month': '6', 'birth_year': '1989', 'firstname': 'Michael', 'lastname': 'Miller', 'company': 'Dyer LLC', 'address1': '190 Nicole Unions', 'address2': 'Suite 064', 'country': 'Canada', 'zipcode': '87513', 'state': 'Nova Scotia', 'city': 'Mcbridemouth', 'mobile_number': '9226573281'}
+INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/createAccount -> HTTP 200 body={"responseCode": 201, "message": "User created!"}
+INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/verifyLogin data={'email': 'qaframework_c0a140e94a@mailinator.com', 'password': '***'}
+INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/verifyLogin -> HTTP 200 body={"responseCode": 200, "message": "User exists!"}
+INFO     utils.api_client:api_client.py:53 DELETE https://automationexercise.com/api/deleteAccount data={'email': 'qaframework_c0a140e94a@mailinator.com', 'password': '***'}
+INFO     utils.api_client:api_client.py:57 DELETE https://automationexercise.com/api/deleteAccount -> HTTP 200 body={"responseCode": 200, "message": "Account deleted!"}
