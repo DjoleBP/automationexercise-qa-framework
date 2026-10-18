@@ -1,6 +1,0 @@
-INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/createAccount data={'name': 'David Murray', 'email': 'qaframework_14d144feac@mailinator.com', 'password': '***', 'title': 'Mrs', 'birth_date': '28', 'birth_month': '12', 'birth_year': '1973', 'firstname': 'Michael', 'lastname': 'Pratt', 'company': 'Huffman-Acosta', 'address1': '042 James Falls Suite 029', 'address2': 'Apt. 243', 'country': 'Canada', 'zipcode': '10369', 'state': 'Ontario', 'city': 'South Desireeton', 'mobile_number': '2656909061'}
-INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/createAccount -> HTTP 200 body={"responseCode": 201, "message": "User created!"}
-INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/verifyLogin data={'email': 'qaframework_14d144feac@mailinator.com', 'password': '***'}
-INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/verifyLogin -> HTTP 200 body={"responseCode": 200, "message": "User exists!"}
-INFO     utils.api_client:api_client.py:53 DELETE https://automationexercise.com/api/deleteAccount data={'email': 'qaframework_14d144feac@mailinator.com', 'password': '***'}
-INFO     utils.api_client:api_client.py:57 DELETE https://automationexercise.com/api/deleteAccount -> HTTP 200 body={"responseCode": 200, "message": "Account deleted!"}
