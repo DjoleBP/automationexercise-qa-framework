@@ -1,0 +1,2 @@
+INFO     utils.api_client:api_client.py:53 DELETE https://automationexercise.com/api/verifyLogin data=None
+INFO     utils.api_client:api_client.py:57 DELETE https://automationexercise.com/api/verifyLogin -> HTTP 200 body={"responseCode": 405, "message": "This request method is not supported."}
