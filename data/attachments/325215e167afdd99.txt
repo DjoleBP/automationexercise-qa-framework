@@ -1,0 +1,2 @@
+INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/productsList data=None
+INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/productsList -> HTTP 503 body=<html><head><meta name='viewport' content='width=device-width, initial-scale=1'></head><body><h2>This website is under heavy load (queue full)</h2><p>We're sorry, too many people are accessing this website at the same time. We're working on this problem. Please try again later.</p></body></html>
