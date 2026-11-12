@@ -1,0 +1,2 @@
+INFO     utils.api_client:api_client.py:53 POST https://automationexercise.com/api/productsList data=None
+INFO     utils.api_client:api_client.py:57 POST https://automationexercise.com/api/productsList -> HTTP 200 body={"responseCode": 405, "message": "This request method is not supported."}
