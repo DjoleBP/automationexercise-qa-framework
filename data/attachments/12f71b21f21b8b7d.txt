@@ -1,0 +1,2 @@
+INFO     utils.api_client:api_client.py:53 GET https://automationexercise.com/api/brandsList data=None
+INFO     utils.api_client:api_client.py:57 GET https://automationexercise.com/api/brandsList -> HTTP 403 body=
